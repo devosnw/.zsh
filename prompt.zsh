@@ -8,7 +8,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="${PR_GREEN}"
 
 # host
 function get_host() {
-    echo "${PR_CYAN}%m${PR_WHITE}:${RESET}"
+    echo "${PR_BLUE}%m${PR_WHITE}:${RESET}"
 }
 
 # returns pwd or ~ if in home
