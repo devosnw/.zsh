@@ -37,7 +37,7 @@ function get_space() {
 # returns the svn dir
 function svn_status() {
     # dirty or clean?
-    local dirty=$(svn st)
+    local dirty="$(svn st)"
     if [ ${#dirty} != 0 ]; then
         dirty="${PR_RED}"
     else
