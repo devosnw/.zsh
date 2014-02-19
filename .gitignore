@@ -1,0 +1,6 @@
+# left from the svn commands
+cache/
+
+# for personalizing zsh per-computer
+my.zsh
+
