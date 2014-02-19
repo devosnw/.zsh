@@ -1,37 +1,19 @@
 autoload -U colors && colors # Enable colors in prompt
 
 # git prompt colors
-ZSH_THEME_GIT_PROMPT_PREFIX="± ⟫ "
-ZSH_THEME_GIT_PROMPT_SUFFIX=" ⟪${RESET}"
-ZSH_THEME_GIT_PROMPT_DIRTY="${PR_RED}"
-ZSH_THEME_GIT_PROMPT_CLEAN="${PR_GREEN}"
+ZSH_THEME_GIT_PROMPT_PREFIX="± ⟫ on "
+ZSH_THEME_GIT_PROMPT_SUFFIX=" ⟪%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}"
 
 # host
 function get_host() {
-    echo "${PR_BLUE}%m${PR_WHITE}:${RESET}"
+    echo "%m"
 }
 
 # returns pwd or ~ if in home
 function get_pwd() {
-   echo "${PR_YELLOW}${PWD/$HOME/~}${RESET}"
-}
-
-# returns the spacing in the terminal prompt
-function get_space() {
-    local zero='%([BSUbfksu]|([FB]|){*})'
-
-    # get actual amount of blank space
-    # width = columns - host - pwd - vcs
-    # (( termwidth = ${COLUMNS} - ${#${(S%%)_host//$~zero/}} - ${#${(S%%)_pwd//$~zero/}} - ${#${(S%%)_vcs//$~zero/}} ))
-    local termwidth=$(( termwidth = ${COLUMNS} - $1 ))
-
-    # return the spacing
-    local space=""
-    for i in {1..$termwidth}; do
-        space="${space} "
-    done
-
-    echo "$space"
+   echo $(pwd | sed -e "s,^$HOME,~,")
 }
 
 # returns the svn dir
@@ -39,9 +21,9 @@ function svn_status() {
     # dirty or clean?
     local dirty="$(svn st)"
     if [ ${#dirty} != 0 ]; then
-        dirty="${PR_RED}"
+        dirty="%{$fg[red]%}"
     else
-        dirty="${PR_GREEN}"
+        dirty="%{$fg[green]%}"
     fi
 
     # get branch name and revision #
@@ -50,7 +32,7 @@ function svn_status() {
 
     # echo out the status
     if [ ${#branch} != 0 ]; then
-        echo "$dirty§ ⟫ $branch:$revision ⟪${RESET}"
+        echo "$dirty§ ⟫ $branch:$revision ⟪%{$reset_color%}"
     fi
 }
 
@@ -71,24 +53,14 @@ function get_vcs_status() {
 
 # makes the prompt
 function make_prompt() {
-    # prompt vars
-    # local zero='%([BSUbfksu]|([FB]|){*})'
-
     # set the vars
     local host="$(get_host)"
     local pwd="$(get_pwd)"
-    local vcs="$(get_vcs_status)"
-    # local len=$(( ${#${(S%%)host//$~zero/}} + ${#${(S%%)pwd//$~zero/}} + ${#${(S%%)vcs//$~zero/}} ))
-    # local space="$(get_space $len)"
 
     # the prompt
     echo "
-$host $pwd $vcs
-$PR_WHITE▸$RESET "
+%{$fg[blue]%}$host%{$fg[white]%}: %{$fg[yellow]%}$pwd
+%{$fg[white]%}▸%{$reset_color%} "
 }
 
-#PROMPT=""
-
 export SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r$reset_color [(y)es (n)o (a)bort (e)dit]? "
-
-#RPROMPT='${PR_GREEN}$(virtualenv_info)%{$reset_color%} ${PR_RED}${ruby_version}%{$reset_color%}'

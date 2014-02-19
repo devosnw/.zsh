@@ -6,7 +6,8 @@ function precmd {
     # Put the parentdir/currentdir in the tab
     # echo -ne "\e]1;$PWD:h:t/$PWD:t\a"
 
-    PROMPT="$(make_prompt)"
+    PROMPT='$(make_prompt)'
+    RPROMPT='$(get_vcs_status)'
 }
 
 function set_running_app {
