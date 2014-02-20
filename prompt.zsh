@@ -59,7 +59,7 @@ function make_prompt() {
 
     # the prompt
     echo "
-%{$fg[blue]%}$host%{$fg[white]%}: %{$fg[yellow]%}$pwd
+%{$fg[cyan]%}$host%{$fg[white]%}: %{$fg[yellow]%}$pwd
 %{$fg[white]%}▸%{$reset_color%} "
 }
 
