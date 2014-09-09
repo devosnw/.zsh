@@ -168,3 +168,8 @@ alias nomz='ps aux | less'
 alias nomnom='killall'
 alias cya='reboot'
 alias kthxbai='halt'
+
+#------------------------
+# sudo
+#------------------------
+alias yolo='sudo $(fc -ln -1)'
