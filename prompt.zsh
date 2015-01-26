@@ -44,7 +44,8 @@ function git_status() {
 # returns the vcs status
 function get_vcs_status() {
     # get status
-    if [ -d '.svn' ]; then
+    svn info 1>/dev/null 2>&1
+    if [[ "$?" -eq 0 ]]; then
         echo "$(svn_status)"
     elif [ -d '.git' ] || git rev-parse --git-dir > /dev/null 2>&1; then
         echo "$(git_status)"
