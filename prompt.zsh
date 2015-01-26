@@ -28,11 +28,11 @@ function svn_status() {
     fi
 
     # get branch name and revision #
-    local branch=`svn_get_branch_name`
-    local revision=`svn info | awk '/^Revision:/{print $2}'`
+    local branch=$(svn_get_branch_name)
+    local revision=$(svn info | awk '/^Revision:/{print $2}')
 
     # echo out the status
-    if [ ${#branch} != 0 ]; then
+    if [[ -n "${branch}" ]]; then
         echo "$dirty§ ⟫ $branch:$revision ⟪%{$reset_color%}"
     fi
 }
