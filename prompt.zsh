@@ -19,8 +19,9 @@ function get_pwd() {
 # returns the svn dir
 function svn_status() {
     # dirty or clean?
-    local dirty="$(svn st)"
-    if [ ${#dirty} != 0 ]; then
+    local dirty="$(svn status --quiet)"
+    local unversioned=$(svn status | grep --color=NEVER '^\?')
+    if [[ -n "${dirty}" ]] || [[ -n "${unversioned}" ]]; then
         dirty="%{$fg[red]%}"
     else
         dirty="%{$fg[green]%}"
