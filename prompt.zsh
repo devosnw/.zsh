@@ -27,9 +27,9 @@ function svn_status() {
     unversioned=$(svn status | grep --color=NEVER '^\?')
 
     if [[ -n "${dirty}" ]] || [[ -n "${unversioned}" ]]; then
-        color="%{$fg[red]%}"
+        color="$fg[red]"
     else
-        color="%{$fg[green]%}"
+        color="$fg[green]"
     fi
 
     # get repo information
@@ -48,7 +48,7 @@ function svn_status() {
     revision=$(echo "${info}" | awk '/^Revision:/{ print $2; }')
 
     # echo out the status
-    echo "${color}§ ⟫ ${repo}${relative_path}@${revision} ⟪%{$reset_color%}"
+    echo "%{${color}%}§ ⟫ ${repo}${relative_path}@${revision} ⟪%{${reset_color}%}"
 }
 
 # returns the git status
