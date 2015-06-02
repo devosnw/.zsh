@@ -36,19 +36,36 @@ function svn_status() {
     local info
     local repo
     local relative_path
+    local branch
     local revision
     info=$(svn info)
     repo=$(echo "${info}" | awk '/^Repository Root:/{ print $3; }')
     repo=$(basename "${repo}")
     relative_path=$(echo "${info}" | awk '/^Relative URL:/{ print $3; }')
     relative_path="${relative_path:2}"
-    if [[ -n "${relative_path}" ]]; then
-        relative_path=":${relative_path}"
+    # explode on "/"
+    relative_path=(${(ps:\/:)${relative_path}})
+
+    for (( i = 1; i <= $#relative_path; i++ )) do
+        local part
+        part="${relative_path[i]}"
+        branch="${branch}/${part}"
+
+        if [[ "${part}" == 'trunk' ]]; then
+            break
+        elif [[ "${part}" =~ ^(branches|tags)$ ]]; then
+            branch="${branch}/${relative_path[((i+1))]}"
+            break
+        fi
+    done
+
+    if [[ -n "${branch}" ]]; then
+        branch=":${branch:1}"
     fi
     revision=$(echo "${info}" | awk '/^Revision:/{ print $2; }')
 
     # echo out the status
-    echo "%{${color}%}§ ⟫ ${repo}${relative_path}@${revision} ⟪%{${reset_color}%}"
+    echo "%{${color}%}§ ⟫ ${repo}${branch}@${revision} ⟪%{${reset_color}%}"
 }
 
 # returns the git status
