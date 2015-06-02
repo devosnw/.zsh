@@ -46,15 +46,15 @@ function svn_status() {
     # explode on "/"
     relative_path=(${(ps:\/:)${relative_path}})
 
-    for (( i = 1; i <= $#relative_path; i++ )) do
-        local part
+    local part
+    for (( i = 1; i <= ${#relative_path}; i++ )); do
         part="${relative_path[i]}"
         branch="${branch}/${part}"
 
         if [[ "${part}" == 'trunk' ]]; then
             break
         elif [[ "${part}" =~ ^(branches|tags)$ ]]; then
-            branch="${branch}/${relative_path[((i+1))]}"
+            branch="${branch}/${relative_path[((i + 1))]}"
             break
         fi
     done
