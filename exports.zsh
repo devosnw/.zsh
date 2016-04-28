@@ -37,3 +37,7 @@ export LC_COLLATE=C
 # export WORKON_HOME=$HOME/.virtualenvs
 # export PROJECT_HOME=$HOME/Projects/django
 # source /usr/local/bin/virtualenvwrapper.sh
+
+# homebrew has started collecting google analytics...
+export HOMEBREW_NO_ANALYTICS=1
+
